@@ -1,12 +1,3 @@
-/*
-* Copyright (c) 2009,北京海鑫智圣技术有限公司
-* All rights reserved.
-**THID_CVR_IDCard.h
-**current version: 1.0
-**created time:2011-07-14
-**Author:Ly
-*/
-
 #ifndef __THID_CVR_IDCARD_H__
 #define __THID_CVR_IDCARD_H__
 
