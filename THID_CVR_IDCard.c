@@ -1,24 +1,3 @@
-/*
- * Copyright (c) 2009,±±¾©º£öÎÖÇÊ¥¼¼ÊõÓĞÏŞ¹«Ë¾
- * All rights reserved.
- **THID_CVR_IDCard.c
- **current version: 1.0
- **created time:2011-07-14
- **Author:Ly
- **amended time:2011-08-15
- **description: 
- **		1: add verify result of random cmd_init0 in CVR_Authenticate()
- **		2: using fix lic (2010~2013)
- **		3: amend CVR_ReadBaseMsg()
- **			-add 0x0D 0x0A in wz data, and Sex and Nation is decode
- **			-store idcard info to memory, not create file
- **		4: amend CVR_Read_Content()
- **			-add 0x0D 0x0A in wz data, and Sex and Nation is decode
- **			-add type6
- **		5: amend GetPeopleName(),GetPeopleSex(),GetPeopleNation(),...etc, get detail info(
- **			GBK), Sex and Nation is decode
- **		
- */
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>               
@@ -619,7 +598,7 @@ static int Card_Reader_All(unsigned char* buf_read,int *pSize)
 
             DPRINTF("cmd_readAll:%d\n",wsize);
 #endif
-            if(wsize > nAllReadBufSize){//Êµ¼Ê¶Á³öµÄĞÅÏ¢±ÈÔ¤ÉèµÄ´ó
+            if(wsize > nAllReadBufSize){//å®é™…è¯»å‡ºçš„ä¿¡æ¯æ¯”é¢„è®¾çš„å¤§
                 free(buf_read);
                 allReadBuf = (unsigned char*)malloc(wsize);
                 buf_read = allReadBuf;
@@ -709,64 +688,64 @@ static void getNation(int code, char *pcNationStr, int *nationStrLen)
 
 	pcNationStrLen = *nationStrLen;
 	switch(code){
-		case 01:  {snprintf(pcNationStr,pcNationStrLen,"ºº"); *nationStrLen = 2;}break;  
-		case 02:  {snprintf(pcNationStr,pcNationStrLen,"ÃÉ¹Å"); *nationStrLen = 4;}break;
-		case 03:  {snprintf(pcNationStr,pcNationStrLen,"»Ø"); *nationStrLen = 2;}break;
-		case 04:  {snprintf(pcNationStr,pcNationStrLen,"²Ø"); *nationStrLen = 2;}break;
-		case 05:  {snprintf(pcNationStr,pcNationStrLen,"Î¬Îá¶û"); *nationStrLen = 6;}break;
-		case 06:  {snprintf(pcNationStr,pcNationStrLen,"Ãç"); *nationStrLen = 2;}break;
-		case 07:  {snprintf(pcNationStr,pcNationStrLen,"ÒÍ"); *nationStrLen = 2;}break;
-		case 8:   {snprintf(pcNationStr,pcNationStrLen,"×³"); *nationStrLen = 2;}break;
-		case 9:   {snprintf(pcNationStr,pcNationStrLen,"²¼ÒÀ"); *nationStrLen = 4;}break;
-		case 10:  {snprintf(pcNationStr,pcNationStrLen,"³¯ÏÊ"); *nationStrLen = 4;}break;
-		case 11:  {snprintf(pcNationStr,pcNationStrLen,"Âú"); *nationStrLen = 2;}break;
-		case 12:  {snprintf(pcNationStr,pcNationStrLen,"¶±"); *nationStrLen = 2;}break;
-		case 13:  {snprintf(pcNationStr,pcNationStrLen,"Ñş"); *nationStrLen = 2;}break;
-		case 14:  {snprintf(pcNationStr,pcNationStrLen,"°×"); *nationStrLen = 2;}break;
-		case 15:  {snprintf(pcNationStr,pcNationStrLen,"ÍÁ¼Ò"); *nationStrLen = 4;}break;
-		case 16:  {snprintf(pcNationStr,pcNationStrLen,"¹şÄá"); *nationStrLen = 4;}break;
-		case 17:  {snprintf(pcNationStr,pcNationStrLen,"¹şÈø¿Ë"); *nationStrLen = 6;}break;
-		case 18:  {snprintf(pcNationStr,pcNationStrLen,"´ö"); *nationStrLen = 2;}break;
-		case 19:  {snprintf(pcNationStr,pcNationStrLen,"Àè"); *nationStrLen = 2;}break;
-		case 20:  {snprintf(pcNationStr,pcNationStrLen,"ÀüËÛ"); *nationStrLen = 4;}break;
-		case 21:  {snprintf(pcNationStr,pcNationStrLen,"Øô"); *nationStrLen = 2;}break;
-		case 22:  {snprintf(pcNationStr,pcNationStrLen,"î´"); *nationStrLen = 2;}break;
-		case 23:  {snprintf(pcNationStr,pcNationStrLen,"¸ßÉ½"); *nationStrLen = 4;}break;
-		case 24:  {snprintf(pcNationStr,pcNationStrLen,"À­ìï"); *nationStrLen = 4;}break;
-		case 25:  {snprintf(pcNationStr,pcNationStrLen,"Ë®"); *nationStrLen = 2;}break;
-		case 26:  {snprintf(pcNationStr,pcNationStrLen,"¶«Ïç"); *nationStrLen = 4;}break;
-		case 27:  {snprintf(pcNationStr,pcNationStrLen,"ÄÉÎ÷"); *nationStrLen = 4;}break;
-		case 28:  {snprintf(pcNationStr,pcNationStrLen,"¾°ÆÄ"); *nationStrLen = 4;}break;
-		case 29:  {snprintf(pcNationStr,pcNationStrLen,"¿Â¶û¿Ë×Î"); *nationStrLen = 8;}break;
-		case 30:  {snprintf(pcNationStr,pcNationStrLen,"ÍÁ"); *nationStrLen = 2;}break;
-		case 31:  {snprintf(pcNationStr,pcNationStrLen,"´ïÎÓ¶û"); *nationStrLen = 6;}break;
-		case 32:  {snprintf(pcNationStr,pcNationStrLen,"ØïÀĞ"); *nationStrLen = 4;}break;
-		case 33:  {snprintf(pcNationStr,pcNationStrLen,"Ç¼"); *nationStrLen = 2;}break;
-		case 34:  {snprintf(pcNationStr,pcNationStrLen,"²¼ÀÊ"); *nationStrLen = 4;}break;
-		case 35:  {snprintf(pcNationStr,pcNationStrLen,"ÈöÀ­"); *nationStrLen = 4;}break;
-		case 36:  {snprintf(pcNationStr,pcNationStrLen,"Ã«ÄÏ"); *nationStrLen = 4;}break;
-		case 37:  {snprintf(pcNationStr,pcNationStrLen,"ØîÀĞ"); *nationStrLen = 4;}break;
-		case 38:  {snprintf(pcNationStr,pcNationStrLen,"Îı²®"); *nationStrLen = 4;}break;
-		case 39:  {snprintf(pcNationStr,pcNationStrLen,"°¢²ı"); *nationStrLen = 4;}break;
-		case 40:  {snprintf(pcNationStr,pcNationStrLen,"ÆÕÃ×"); *nationStrLen = 4;}break;
-		case 41:  {snprintf(pcNationStr,pcNationStrLen,"Ëş¼ª¿Ë"); *nationStrLen = 3;}break;
-		case 42:  {snprintf(pcNationStr,pcNationStrLen,"Å­"); *nationStrLen = 2;}break;
-		case 43:  {snprintf(pcNationStr,pcNationStrLen,"ÎÚ×Î±ğ¿Ë"); *nationStrLen = 8;}break;
-		case 44:  {snprintf(pcNationStr,pcNationStrLen,"¶íÂŞË¹"); *nationStrLen = 6;}break;
-		case 45:  {snprintf(pcNationStr,pcNationStrLen,"¶õÎÂ¿Ë"); *nationStrLen = 6;}break;
-		case 46:  {snprintf(pcNationStr,pcNationStrLen,"µÂ°º"); *nationStrLen = 4;}break;
-		case 47:  {snprintf(pcNationStr,pcNationStrLen,"±£°²"); *nationStrLen = 4;}break;
-		case 48:  {snprintf(pcNationStr,pcNationStrLen,"Ô£¹Ì"); *nationStrLen = 4;}break;
-		case 49:  {snprintf(pcNationStr,pcNationStrLen,"¾©"); *nationStrLen = 2;}break;
-		case 50:  {snprintf(pcNationStr,pcNationStrLen,"ËşËş¶û"); *nationStrLen = 6;}break;
-		case 51:  {snprintf(pcNationStr,pcNationStrLen,"¶ÀÁú"); *nationStrLen = 4;}break;
-		case 52:  {snprintf(pcNationStr,pcNationStrLen,"¶õÂ×´º"); *nationStrLen = 6;}break;
-		case 53:  {snprintf(pcNationStr,pcNationStrLen,"ºÕÕÜ"); *nationStrLen = 4;}break;
-		case 54:  {snprintf(pcNationStr,pcNationStrLen,"ÃÅ°Í"); *nationStrLen = 4;}break;
-		case 55:  {snprintf(pcNationStr,pcNationStrLen,"çó°Í"); *nationStrLen = 4;}break;
-		case 56:  {snprintf(pcNationStr,pcNationStrLen,"»ùÅµ"); *nationStrLen = 4;}break;
-		case 97:  {snprintf(pcNationStr,pcNationStrLen,"ÆäËû"); *nationStrLen = 4;}break;
-		case 98:  {snprintf(pcNationStr,pcNationStrLen,"Íâ¹úÑªÍ³ÖĞ¹ú¼®ÈËÊ¿"); *nationStrLen = 18;}break;
+		case 01:  {snprintf(pcNationStr,pcNationStrLen,"æ±‰"); *nationStrLen = 2;}break;  
+		case 02:  {snprintf(pcNationStr,pcNationStrLen,"è’™å¤"); *nationStrLen = 4;}break;
+		case 03:  {snprintf(pcNationStr,pcNationStrLen,"å›"); *nationStrLen = 2;}break;
+		case 04:  {snprintf(pcNationStr,pcNationStrLen,"è—"); *nationStrLen = 2;}break;
+		case 05:  {snprintf(pcNationStr,pcNationStrLen,"ç»´å¾å°”"); *nationStrLen = 6;}break;
+		case 06:  {snprintf(pcNationStr,pcNationStrLen,"è‹—"); *nationStrLen = 2;}break;
+		case 07:  {snprintf(pcNationStr,pcNationStrLen,"å½"); *nationStrLen = 2;}break;
+		case 8:   {snprintf(pcNationStr,pcNationStrLen,"å£®"); *nationStrLen = 2;}break;
+		case 9:   {snprintf(pcNationStr,pcNationStrLen,"å¸ƒä¾"); *nationStrLen = 4;}break;
+		case 10:  {snprintf(pcNationStr,pcNationStrLen,"æœé²œ"); *nationStrLen = 4;}break;
+		case 11:  {snprintf(pcNationStr,pcNationStrLen,"æ»¡"); *nationStrLen = 2;}break;
+		case 12:  {snprintf(pcNationStr,pcNationStrLen,"ä¾—"); *nationStrLen = 2;}break;
+		case 13:  {snprintf(pcNationStr,pcNationStrLen,"ç‘¶"); *nationStrLen = 2;}break;
+		case 14:  {snprintf(pcNationStr,pcNationStrLen,"ç™½"); *nationStrLen = 2;}break;
+		case 15:  {snprintf(pcNationStr,pcNationStrLen,"åœŸå®¶"); *nationStrLen = 4;}break;
+		case 16:  {snprintf(pcNationStr,pcNationStrLen,"å“ˆå°¼"); *nationStrLen = 4;}break;
+		case 17:  {snprintf(pcNationStr,pcNationStrLen,"å“ˆè¨å…‹"); *nationStrLen = 6;}break;
+		case 18:  {snprintf(pcNationStr,pcNationStrLen,"å‚£"); *nationStrLen = 2;}break;
+		case 19:  {snprintf(pcNationStr,pcNationStrLen,"é»"); *nationStrLen = 2;}break;
+		case 20:  {snprintf(pcNationStr,pcNationStrLen,"å‚ˆåƒ³"); *nationStrLen = 4;}break;
+		case 21:  {snprintf(pcNationStr,pcNationStrLen,"ä½¤"); *nationStrLen = 2;}break;
+		case 22:  {snprintf(pcNationStr,pcNationStrLen,"ç•²"); *nationStrLen = 2;}break;
+		case 23:  {snprintf(pcNationStr,pcNationStrLen,"é«˜å±±"); *nationStrLen = 4;}break;
+		case 24:  {snprintf(pcNationStr,pcNationStrLen,"æ‹‰ç¥œ"); *nationStrLen = 4;}break;
+		case 25:  {snprintf(pcNationStr,pcNationStrLen,"æ°´"); *nationStrLen = 2;}break;
+		case 26:  {snprintf(pcNationStr,pcNationStrLen,"ä¸œä¹¡"); *nationStrLen = 4;}break;
+		case 27:  {snprintf(pcNationStr,pcNationStrLen,"çº³è¥¿"); *nationStrLen = 4;}break;
+		case 28:  {snprintf(pcNationStr,pcNationStrLen,"æ™¯é¢‡"); *nationStrLen = 4;}break;
+		case 29:  {snprintf(pcNationStr,pcNationStrLen,"æŸ¯å°”å…‹å­œ"); *nationStrLen = 8;}break;
+		case 30:  {snprintf(pcNationStr,pcNationStrLen,"åœŸ"); *nationStrLen = 2;}break;
+		case 31:  {snprintf(pcNationStr,pcNationStrLen,"è¾¾æ–¡å°”"); *nationStrLen = 6;}break;
+		case 32:  {snprintf(pcNationStr,pcNationStrLen,"ä»«ä½¬"); *nationStrLen = 4;}break;
+		case 33:  {snprintf(pcNationStr,pcNationStrLen,"ç¾Œ"); *nationStrLen = 2;}break;
+		case 34:  {snprintf(pcNationStr,pcNationStrLen,"å¸ƒæœ—"); *nationStrLen = 4;}break;
+		case 35:  {snprintf(pcNationStr,pcNationStrLen,"æ’’æ‹‰"); *nationStrLen = 4;}break;
+		case 36:  {snprintf(pcNationStr,pcNationStrLen,"æ¯›å—"); *nationStrLen = 4;}break;
+		case 37:  {snprintf(pcNationStr,pcNationStrLen,"ä»¡ä½¬"); *nationStrLen = 4;}break;
+		case 38:  {snprintf(pcNationStr,pcNationStrLen,"é”¡ä¼¯"); *nationStrLen = 4;}break;
+		case 39:  {snprintf(pcNationStr,pcNationStrLen,"é˜¿æ˜Œ"); *nationStrLen = 4;}break;
+		case 40:  {snprintf(pcNationStr,pcNationStrLen,"æ™®ç±³"); *nationStrLen = 4;}break;
+		case 41:  {snprintf(pcNationStr,pcNationStrLen,"å¡”å‰å…‹"); *nationStrLen = 3;}break;
+		case 42:  {snprintf(pcNationStr,pcNationStrLen,"æ€’"); *nationStrLen = 2;}break;
+		case 43:  {snprintf(pcNationStr,pcNationStrLen,"ä¹Œå­œåˆ«å…‹"); *nationStrLen = 8;}break;
+		case 44:  {snprintf(pcNationStr,pcNationStrLen,"ä¿„ç½—æ–¯"); *nationStrLen = 6;}break;
+		case 45:  {snprintf(pcNationStr,pcNationStrLen,"é„‚æ¸©å…‹"); *nationStrLen = 6;}break;
+		case 46:  {snprintf(pcNationStr,pcNationStrLen,"å¾·æ˜‚"); *nationStrLen = 4;}break;
+		case 47:  {snprintf(pcNationStr,pcNationStrLen,"ä¿å®‰"); *nationStrLen = 4;}break;
+		case 48:  {snprintf(pcNationStr,pcNationStrLen,"è£•å›º"); *nationStrLen = 4;}break;
+		case 49:  {snprintf(pcNationStr,pcNationStrLen,"äº¬"); *nationStrLen = 2;}break;
+		case 50:  {snprintf(pcNationStr,pcNationStrLen,"å¡”å¡”å°”"); *nationStrLen = 6;}break;
+		case 51:  {snprintf(pcNationStr,pcNationStrLen,"ç‹¬é¾™"); *nationStrLen = 4;}break;
+		case 52:  {snprintf(pcNationStr,pcNationStrLen,"é„‚ä¼¦æ˜¥"); *nationStrLen = 6;}break;
+		case 53:  {snprintf(pcNationStr,pcNationStrLen,"èµ«å“²"); *nationStrLen = 4;}break;
+		case 54:  {snprintf(pcNationStr,pcNationStrLen,"é—¨å·´"); *nationStrLen = 4;}break;
+		case 55:  {snprintf(pcNationStr,pcNationStrLen,"çå·´"); *nationStrLen = 4;}break;
+		case 56:  {snprintf(pcNationStr,pcNationStrLen,"åŸºè¯º"); *nationStrLen = 4;}break;
+		case 97:  {snprintf(pcNationStr,pcNationStrLen,"å…¶ä»–"); *nationStrLen = 4;}break;
+		case 98:  {snprintf(pcNationStr,pcNationStrLen,"å¤–å›½è¡€ç»Ÿä¸­å›½ç±äººå£«"); *nationStrLen = 18;}break;
 		default : {snprintf(pcNationStr,pcNationStrLen,""); *nationStrLen = 0;}
 	}     
 }
@@ -804,11 +783,11 @@ static void fileDataExchange(unsigned char *dataBuf, int *actualDataLen)
 	//2.sex
 	if ('1' == dataBuf[j])
 	{
-		memcpy(tmpBuf + tmp, "ÄĞ", sizeof(short));
+		memcpy(tmpBuf + tmp, "ç”·", sizeof(short));
 	}
 	else
 	{
-		memcpy(tmpBuf + tmp, "Å®", sizeof(short));
+		memcpy(tmpBuf + tmp, "å¥³", sizeof(short));
 	}
 	tmp += 2;
 	tmpBuf[tmp++] = 0x0D;
@@ -831,19 +810,19 @@ static void fileDataExchange(unsigned char *dataBuf, int *actualDataLen)
 	memcpy(tmpBuf + tmp, dataBuf + j, sizeof(int));
 	tmp += sizeof(int);
 	j += sizeof(int);
-	memcpy(tmpBuf + tmp, "Äê", sizeof(short));
+	memcpy(tmpBuf + tmp, "å¹´", sizeof(short));
 	tmp += sizeof(short);
 	//4.2 month
 	memcpy(tmpBuf + tmp, dataBuf + j, sizeof(short));
 	tmp += sizeof(short);
 	j += sizeof(short);
-	memcpy(tmpBuf + tmp, "ÔÂ", sizeof(short));
+	memcpy(tmpBuf + tmp, "æœˆ", sizeof(short));
 	tmp += sizeof(short);
 	//4.3 day
 	memcpy(tmpBuf + tmp, dataBuf + j, sizeof(short));
 	tmp += sizeof(short);
 	j += sizeof(short);
-	memcpy(tmpBuf + tmp, "ÈÕ", sizeof(short));
+	memcpy(tmpBuf + tmp, "æ—¥", sizeof(short));
 	tmp += sizeof(short);
 	tmpBuf[tmp++] = 0x0D;
 	tmpBuf[tmp++] = 0x0A;
